@@ -8,12 +8,13 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   tf
+  kmsgs
 )
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES complementary_filter
-  CATKIN_DEPENDS message_filters roscpp sensor_msgs std_msgs tf
+  CATKIN_DEPENDS message_filters roscpp sensor_msgs std_msgs tf kmsgs
 )
 
 include_directories(
@@ -29,11 +30,12 @@ add_library(complementary_filter
   include/imu_complementary_filter/complementary_filter_ros.h
 )
 
-
 # create complementary_filter_node executable
 add_executable(complementary_filter_node
   src/complementary_filter_node.cpp)
 target_link_libraries(complementary_filter_node complementary_filter ${catkin_LIBRARIES})
+
+add_dependencies(complementary_filter_node kmsgs_generate_messages_cpp)
 
 install(TARGETS complementary_filter complementary_filter_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
